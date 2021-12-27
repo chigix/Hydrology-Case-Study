@@ -1,15 +1,23 @@
-Hydrology Case Study
-================
+---
+title: "Hydrology Case Study"
+output: github_document
+---
 
 Attempt of Exploratory Data Analysis in Hydrology Case Studies.
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(maps)
+library(magrittr)
+library(ggplot2)
+library(tibble)
+```
+
 ## Initial Setup
 
-[RENV
-workflow](https://rstudio.github.io/renv/articles/renv.html#workflow-1)
-is employed here:
+[RENV workflow](https://rstudio.github.io/renv/articles/renv.html#workflow-1) is employed here:
 
-``` r
+```{r eval=FALSE}
 # `renv.lock` is used to store and restore all library dependencies.
 > renv::restore()
 
@@ -19,21 +27,17 @@ is employed here:
 
 ## Data Sets
 
--   `map("lakes")`
-    -   The World Lakes Database provided by [the R Package
-        `maps`](https://search.r-project.org/CRAN/refmans/maps/html/lakes.html)
-        available in CRAN.
+* `map("lakes")`
+  * The World Lakes Database provided by [the R Package `maps`](https://search.r-project.org/CRAN/refmans/maps/html/lakes.html) available in CRAN.
 
-``` r
+```{r}
 map_data("world") %>%
 ggplot(aes(long, lat)) +
   geom_polygon(aes(group=group)) +
   coord_quickmap()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
-
-``` r
+```{r}
 lakes_data <- map_data("lakes")
 
 lakes_data %>%
@@ -42,9 +46,8 @@ ggplot(aes(long, lat)) +
   coord_quickmap()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-``` r
+```{r}
 lakes_data %>%
   dplyr::filter(dplyr::across(region, ~ grepl("Great Lakes", .))) %>%
   ggplot(aes(long, lat)) +
@@ -53,4 +56,3 @@ lakes_data %>%
   coord_map("albers",  lat0 = 45.5, lat1 = 29.5)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
